@@ -1,0 +1,40 @@
+{
+  "zoomLevelsFile": "zoom_levels_default.json",
+  "rules": [
+    {
+      "condition": "deposition >= 0 && deposition <= 700",
+      "fillColor": "FFFFD4",
+      "strokeColor": "FFFFFF"
+    },
+    {
+      "condition": "deposition > 700 && deposition <= 1000",
+      "fillColor": "FEE391",
+      "strokeColor": "FFFFFF"
+    },
+    {
+      "condition": "deposition > 1000 && deposition <= 1300",
+      "fillColor": "FEC44F",
+      "strokeColor": "FFFFFF"
+    },
+    {
+      "condition": "deposition > 1300 && deposition <= 1600",
+      "fillColor": "FE9929",
+      "strokeColor": "FFFFFF"
+    },
+    {
+      "condition": "deposition > 1600 && deposition <= 1900",
+      "fillColor": "EC7014",
+      "strokeColor": "FFFFFF"
+    },
+    {
+      "condition": "deposition > 1900 && deposition <= 2200",
+      "fillColor": "CC4C02",
+      "strokeColor": "FFFFFF"
+    },
+    {
+      "condition": "deposition > 2200",
+      "fillColor": "8C2D04",
+      "strokeColor": "FFFFFF"
+    }
+  ]
+}

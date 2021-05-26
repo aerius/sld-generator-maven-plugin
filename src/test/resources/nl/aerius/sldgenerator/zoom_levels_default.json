@@ -1,0 +1,27 @@
+[
+  {
+    "zoomLevel": 1,
+    "minScale": 0,
+    "maxScale": 30000
+  },
+  {
+    "zoomLevel": 2,
+    "minScale": 30000,
+    "maxScale": 60000
+  },
+  {
+    "zoomLevel": 3,
+    "minScale": 60000,
+    "maxScale": 150000
+  },
+  {
+    "zoomLevel": 4,
+    "minScale": 150000,
+    "maxScale": 300000
+  },
+  {
+    "zoomLevel": 5,
+    "minScale": 300000,
+    "maxScale": 800000
+  }
+]
