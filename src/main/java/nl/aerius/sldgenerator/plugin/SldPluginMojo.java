@@ -16,6 +16,7 @@
  */
 package nl.aerius.sldgenerator.plugin;
 
+import com.fasterxml.jackson.core.JacksonException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -44,27 +45,33 @@ public class SldPluginMojo extends AbstractMojo {
   private String targetPostfix = "";
 
   public void execute() throws MojoExecutionException {
-    FileScanner.findFilesWithExtension(sourcePath, SOURCE_EXTENSION).forEach(s -> {
 
-      // Source file
-      final Path sourceFilePath = Paths.get(s.getAbsolutePath());
+    try {
+      for (final File file : FileScanner.findFilesWithExtension(sourcePath, SOURCE_EXTENSION)) {
 
-      // Target file
-      String targetFileName = s.getName();
-      targetFileName = targetFileName.substring(0, targetFileName.length() - SOURCE_EXTENSION.length());
-      targetFileName = targetFileName + targetPostfix + TARGET_EXTENSION;
-      final Path targetFilePath = Paths.get(targetPath.getAbsolutePath()).resolve(targetFileName);
+        // Source file
+        final Path sourceFilePath = Paths.get(file.getAbsolutePath());
 
-      try {
+        // Target file
+        String targetFileName = file.getName();
+        targetFileName = targetFileName.substring(0, targetFileName.length() - SOURCE_EXTENSION.length());
+        targetFileName = targetFileName + targetPostfix + TARGET_EXTENSION;
+        final Path targetFilePath = Paths.get(targetPath.getAbsolutePath()).resolve(targetFileName);
 
-        // Generate SLD and write to target file
-        final FileOutputStream outputStream = new FileOutputStream(targetFilePath.toFile());
-        SldPlugin.generateSld(getLog(), sourceFilePath, outputStream);
-        outputStream.close();
-      } catch (IOException e) {
-        getLog().error(e);
+        try {
+
+          // Generate SLD and write to target file
+          final FileOutputStream outputStream = new FileOutputStream(targetFilePath.toFile());
+          SldPlugin.generateSld(getLog(), sourceFilePath, outputStream);
+          outputStream.close();
+
+        } catch (JacksonException e) {
+          throw new MojoExecutionException("JSON Parse Error at (" + sourceFilePath + ") while generating SLDs", e);
+        }
       }
 
-    });
+    } catch (IOException e) {
+      throw new MojoExecutionException("IO Error while generating SLDs", e);
+    }
   }
 }

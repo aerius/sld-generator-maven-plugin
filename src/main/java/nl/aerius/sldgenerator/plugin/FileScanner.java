@@ -20,28 +20,22 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileScanner {
 
   /**
-   * Returns all files in a certain path, with a certain extension as a stream
+   * Returns all files in a certain path, with a certain extension as a list
    * @param searchPath path to search for files
    * @param fileExtension extension used to filter files
-   * @return files as stream
+   * @return files as list
    */
-  public static Stream<File> findFilesWithExtension(final File searchPath, final String fileExtension) {
-
-    try {
+  public static List<File> findFilesWithExtension(final File searchPath, final String fileExtension) throws IOException {
       return Files.walk(searchPath.toPath())
           .filter(Files::isRegularFile)
           .filter(path -> path.toString().endsWith(fileExtension))
-          .map(Path::toFile);
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return Stream.<File>builder().build();
+          .map(Path::toFile)
+          .collect(Collectors.toList());
   }
 }

@@ -2,9 +2,12 @@
 
 ## About
 
-Geoserver uses `.sld` files as stylesheets for the layers. These stylesheets specify which features are visible and with which style. These stylesheets are large `.xml` files, and their syntax is cumbersome.
+Geoserver uses `.sld` files as stylesheets for the layers.
+These stylesheets specify which features are visible and with which style.
+These stylesheets are large `.xml` files, and their syntax is cumbersome.
 
-This plugin generates these `.sld` files from a simple `.sld.json` definition. These definitions contain the rules that the `.sld` file should contain.
+This plugin generates these `.sld` files from a simple `.sld.json` definition.
+These definitions contain the rules that the `.sld` file should contain.
 
 ## Usage
 
@@ -31,9 +34,12 @@ Add the following plugin and (adjusted) configuration to the `pom.xml` file.
 </plugin>
 ```
 __Configuration__
-* `sourcePath` path to the folder where `.sld.json`-files are located. The folder is searched recursively for these files.
-* `targetPath` path to the folder where `.sld` files should be written to. Typical the `styles`-folder within the Geoserver workspace.
-* `targetPostfix` _Optional_ postfix which will be added to the `.sld` file names.
+
+| **key**         | **description**                                                                                                         |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------|
+| `sourcePath`    | path to the folder where `.sld.json`-files are located. The folder is searched recursively for these files.             |
+| `targetPath`    | path to the folder where `.sld` files should be written to. Typical the `styles`-folder within the Geoserver workspace. |
+| `targetPostfix` | _Optional_ postfix which will be added to the `.sld` file names.                                                        |
 
 
 ### Example `.sld.json` file
@@ -56,14 +62,22 @@ __Configuration__
 }
 ```
 
-* `zoomLevelsFile` refers to the zoom level definition file. The zoom level definition is separate because it can be shared between styles. If no zoom level file is defined, no filtering takes place on zoom level.
-* `rules` array containing the rules
-  * `condition` contains the boolean condition to render this style to a feature
-  * `fillColor` color to fill the feature (hexadecimal)
-  * `strokeColor` color to outline the feature (hexadecimal)
-  * `imageUrl` url to an image to draw at the center of the feature. The url is relative to the final `.sld` file, can be a local file in geoserver, or an external image (specify full url)
-  * `customDrawSld` custom XML used in the draw part for this rule in the `.sld` file (for advanced options which can not be specified using above properties)
-  * `customConditionSld` custom XML used in the condition part for this rule in the `.sld` file (for advanced options which can not be specified using above properties)
+| **key**          | **description**                                                                                                                                                                                    |
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `zoomLevelsFile` | refers to the zoom level definition file. The zoom level definition is separate because it can be shared between styles. If no zoom level file is defined, no filtering takes place on zoom level. |
+| `rules`          | array containing the rules                                                                                                                                                                         |
+
+  
+__Rules__
+
+| **key**              | **description**                                                                                                                                                               |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `condition`          | contains the boolean condition to render this style to a feature                                                                                                              |
+| `fillColor`          | color to fill the feature (hexadecimal)                                                                                                                                       |
+| `strokeColor`        | color to outline the feature (hexadecimal)                                                                                                                                    |
+| `imageUrl`           | url to an image to draw at the center of the feature. The url is relative to the final `.sld` file, can be a local file in geoserver, or an external image (specify full url) |
+| `customDrawSld`      | custom XML used in the draw part for this rule in the `.sld` file (for advanced options which can not be specified using above properties)                                    |
+| `customConditionSld` | custom XML used in the condition part for this rule in the `.sld` file (for advanced options which can not be specified using above properties)                               |
 
 ### Example zoom level definition
 
@@ -97,7 +111,8 @@ __Configuration__
 ]
 ```
 
-Above zoom level definition makes sure that features with zoom level 1 are only rendered below scale 30000, features with zoom level 2 are rendered between scale 30000 and 60000 and so on. These are currently the default zoom levels and their scales in AERIUS.
+Above zoom level definition makes sure that features with zoom level 1 are only rendered below scale 30000, features with zoom level 2 are rendered between scale 30000 and 60000 and so on.
+These are currently the default zoom levels and their scales in AERIUS.
 
 ## License
 

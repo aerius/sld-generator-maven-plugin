@@ -16,13 +16,14 @@
  */
 package nl.aerius.sldgenerator.plugin;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import nl.aerius.sldgenerator.generator.SldFile;
+import nl.aerius.sldgenerator.generator.SldUtils;
 import nl.aerius.sldgenerator.input.SldJsonFile;
 import nl.aerius.sldgenerator.input.ZoomLevel;
 import nl.aerius.sldgenerator.input.ZoomLevelsJsonFile;
-import nl.aerius.sldgenerator.generator.SldFile;
-import nl.aerius.sldgenerator.generator.SldUtils;
+
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.IOException;
@@ -39,30 +40,21 @@ public class SldPlugin {
 
   public static void generateSld(final Log log, final Path sourceFilePath, final OutputStream targetFile) throws IOException {
 
-    try {
-      final ObjectMapper objectMapper = new ObjectMapper();
-      SldJsonFile sldJsonFile = objectMapper.readValue(sourceFilePath.toFile(), SldJsonFile.class);
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final SldJsonFile sldJsonFile = objectMapper.readValue(sourceFilePath.toFile(), SldJsonFile.class);
 
-      // If a zoom level file is specified, read and parse this file
-      List<ZoomLevel> zoomLevels = new ArrayList<>();
-      if (sldJsonFile.getZoomLevelsFile() != null) {
-        final Path zoomLevelsFilePath = sourceFilePath.getParent().resolve(sldJsonFile.getZoomLevelsFile());
-        zoomLevels = objectMapper.readValue(zoomLevelsFilePath.toFile(), ZoomLevelsJsonFile.class);
-      }
-
-      String sldFileName = sourceFilePath.toFile().getName();
-      SldFile sldFile = new SldFile(sldFileName.substring(0, sldFileName.length() - SOURCE_EXTENSION.length()), sldJsonFile.getRules(), zoomLevels);
-
-      String generatedSld = SldUtils.generateSLD(sldFile);
-      targetFile.write(generatedSld.getBytes(StandardCharsets.UTF_8));
-
-    } catch (JacksonException e) {
-      log.error("JSON Parse Error in SLD Generation");
-      log.error(e);
-    } catch (IOException e) {
-      log.error("IO Error in SLD Generation");
-      log.error(e);
+    // If a zoom level file is specified, read and parse this file
+    List<ZoomLevel> zoomLevels = new ArrayList<>();
+    if (sldJsonFile.getZoomLevelsFile() != null) {
+      final Path zoomLevelsFilePath = sourceFilePath.getParent().resolve(sldJsonFile.getZoomLevelsFile());
+      zoomLevels = objectMapper.readValue(zoomLevelsFilePath.toFile(), ZoomLevelsJsonFile.class);
     }
+
+    final String sldFileName = sourceFilePath.toFile().getName();
+    final SldFile sldFile = new SldFile(sldFileName.substring(0, sldFileName.length() - SOURCE_EXTENSION.length()), sldJsonFile.getRules(), zoomLevels);
+
+    final String generatedSld = SldUtils.generateSLD(sldFile);
+    targetFile.write(generatedSld.getBytes(StandardCharsets.UTF_8));
   }
 
 }
