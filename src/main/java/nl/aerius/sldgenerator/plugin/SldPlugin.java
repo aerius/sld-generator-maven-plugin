@@ -16,6 +16,15 @@
  */
 package nl.aerius.sldgenerator.plugin;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.maven.plugin.logging.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nl.aerius.sldgenerator.generator.SldFile;
@@ -23,15 +32,6 @@ import nl.aerius.sldgenerator.generator.SldUtils;
 import nl.aerius.sldgenerator.input.SldJsonFile;
 import nl.aerius.sldgenerator.input.ZoomLevel;
 import nl.aerius.sldgenerator.input.ZoomLevelsJsonFile;
-
-import org.apache.maven.plugin.logging.Log;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SldPlugin {
 
@@ -51,7 +51,8 @@ public class SldPlugin {
     }
 
     final String sldFileName = sourceFilePath.toFile().getName();
-    final SldFile sldFile = new SldFile(sldFileName.substring(0, sldFileName.length() - SOURCE_EXTENSION.length()), sldJsonFile.getRules(), zoomLevels);
+    final SldFile sldFile = new SldFile(sldFileName.substring(0, sldFileName.length() - SOURCE_EXTENSION.length()), sldJsonFile.getRules(),
+        zoomLevels);
 
     final String generatedSld = SldUtils.generateSLD(sldFile);
     targetFile.write(generatedSld.getBytes(StandardCharsets.UTF_8));

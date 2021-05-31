@@ -16,18 +16,18 @@
  */
 package nl.aerius.sldgenerator.generator;
 
-
-import nl.aerius.sldgenerator.input.SldRule;
-import nl.aerius.sldgenerator.input.ZoomLevel;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
+
+import nl.aerius.sldgenerator.input.SldRule;
+import nl.aerius.sldgenerator.input.ZoomLevel;
 
 /**
  *
@@ -50,7 +50,7 @@ public class SldUtilsTest {
   @Test
   public void testSLDWithZoomLevels() throws IOException {
     //zoom levels have no effect without rules...
-    final SldFile layer = new SldFile( "aeirus:someLayer");
+    final SldFile layer = new SldFile("aeirus:someLayer");
     addZoomLevels(layer);
     final String sldContent = SldUtils.generateSLD(layer);
     testContent(sldContent, SIMPLE_SLD);
@@ -66,7 +66,7 @@ public class SldUtilsTest {
 
   @Test
   public void testSLDWithIncorrectRules() throws IOException {
-    final SldFile layer = new SldFile( "aeirus:someLayer");
+    final SldFile layer = new SldFile("aeirus:someLayer");
     //the condition (2nd param) is being parsed. This one can't be parsed correctly
     //tbh there should be something done about the colors too... but ah well...
     layer.getRules().add(new SldRule("someweirdcond", "nocolors", "reallynocolors", null, null, null));
@@ -96,7 +96,10 @@ public class SldUtilsTest {
 
   private void addRules(final SldFile layer) {
     layer.getRules().add(new SldRule(null, null, null, "someImg.png", null, null));
-    layer.getRules().add(new SldRule(null, null, null, null, "<sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\">#001122</sld:CssParameter></sld:Stroke></sld:LineSymbolizer>", "<ogc:PropertyIsNull><ogc:PropertyName>someProperty</ogc:PropertyName></ogc:PropertyIsNull>"));
+    layer.getRules()
+        .add(new SldRule(null, null, null, null,
+            "<sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\">#001122</sld:CssParameter></sld:Stroke></sld:LineSymbolizer>",
+            "<ogc:PropertyIsNull><ogc:PropertyName>someProperty</ogc:PropertyName></ogc:PropertyIsNull>"));
     layer.getRules().add(new SldRule("something <= 4", "654321", "123456", null, null, null));
     layer.getRules().add(new SldRule("somethingElse = 8", "FFFFFF", "000000", null, null, null));
   }

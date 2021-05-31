@@ -152,7 +152,7 @@
           </formats>
           <java>
             <includes>
-              <include>src/*/java/nl/overheid/aerius/**/*.java</include>
+              <include>src/*/java/nl/aerius/**/*.java</include>
             </includes>
             <licenseHeader>
               <file>checkstyle-header.txt</file>
