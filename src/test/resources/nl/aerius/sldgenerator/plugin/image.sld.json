@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "condition": "bird_directive = false",
+      "imageUrl": "image.png"
+    },
+    {
+      "condition": "bird_directive = true",
+      "imageUrl": "image.png"
+    }
+  ]
+}

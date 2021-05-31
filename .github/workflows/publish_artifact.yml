@@ -1,0 +1,36 @@
+name: Publish artifact
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Build with Maven
+        run: mvn --no-transfer-progress package
+      - name: Get Maven project version
+        id: get_maven_project_version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+          echo "::set-output name=version::${VERSION}"
+      # Artifacts should only be published if a release is made, otherwise only on pushes with a SNAPSHOT version
+      - if: github.event_name == 'release' || endsWith(steps.get_maven_project_version.outputs.version, '-SNAPSHOT')
+        name: Publish Maven Artifacts
+        uses: samuelmeuli/action-maven-publish@v1
+        with:
+          server_id: aerius-nexus
+          nexus_username: ${{ secrets.nexus_username }}
+          nexus_password: ${{ secrets.nexus_password }}
+          # Tests are already run in the Build step if any, no use running them again
+          maven_args: --no-transfer-progress -DskipTests

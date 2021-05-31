@@ -1,0 +1,14 @@
+{
+  "rules": [
+    {
+      "condition": "bird_directive = false",
+      "fillColor": "99CDBD",
+      "strokeColor": "000000"
+    },
+    {
+      "condition": "bird_directive = true",
+      "fillColor": "E6E600",
+      "strokeColor": "000000"
+    }
+  ]
+}
