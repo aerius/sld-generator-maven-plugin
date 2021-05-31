@@ -31,11 +31,15 @@ public class FileScanner {
    * @param fileExtension extension used to filter files
    * @return files as list
    */
-  public static List<File> findFilesWithExtension(final File searchPath, final String fileExtension) throws IOException {
-      return Files.walk(searchPath.toPath())
+  public static List<File>
+
+      findFilesWithExtension(final File searchPath, final String fileExtension) throws IOException {
+    try (Stream<Path> walk = Files.walk(searchPath.toPath())) {
+      return walk
           .filter(Files::isRegularFile)
           .filter(path -> path.toString().endsWith(fileExtension))
           .map(Path::toFile)
           .collect(Collectors.toList());
+    }
   }
 }

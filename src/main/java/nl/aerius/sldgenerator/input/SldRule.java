@@ -29,9 +29,11 @@ public class SldRule {
   private String customConditionSld;
 
   // Object must be constructable from Jackson
-  public SldRule() {}
+  public SldRule() {
+  }
 
-  public SldRule(final String condition, final String strokeColor, final String fillColor, final String imageUrl, final String customDrawSld, final String customConditionSld) {
+  public SldRule(final String condition, final String strokeColor, final String fillColor, final String imageUrl, final String customDrawSld,
+      final String customConditionSld) {
     this.condition = condition;
     this.strokeColor = strokeColor;
     this.fillColor = fillColor;

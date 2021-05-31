@@ -18,4 +18,5 @@ package nl.aerius.sldgenerator.input;
 
 import java.util.ArrayList;
 
-public class ZoomLevelsJsonFile extends ArrayList<ZoomLevel> {}
+public class ZoomLevelsJsonFile extends ArrayList<ZoomLevel> {
+}

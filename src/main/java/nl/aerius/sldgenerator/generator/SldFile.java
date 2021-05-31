@@ -16,11 +16,11 @@
  */
 package nl.aerius.sldgenerator.generator;
 
-import nl.aerius.sldgenerator.input.SldRule;
-import nl.aerius.sldgenerator.input.ZoomLevel;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.aerius.sldgenerator.input.SldRule;
+import nl.aerius.sldgenerator.input.ZoomLevel;
 
 /**
  * Represents the input required to generate an .sld file

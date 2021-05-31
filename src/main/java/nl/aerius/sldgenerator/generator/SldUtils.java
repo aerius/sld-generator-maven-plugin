@@ -16,15 +16,15 @@
  */
 package nl.aerius.sldgenerator.generator;
 
-import nl.aerius.sldgenerator.input.SldRule;
-import nl.aerius.sldgenerator.input.ZoomLevel;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import nl.aerius.sldgenerator.input.SldRule;
+import nl.aerius.sldgenerator.input.ZoomLevel;
 
 /**
  * Various SLD helper methods.
@@ -173,7 +173,8 @@ public final class SldUtils {
         final ParsedCondition parsedCondition = parseCondition(subCondition);
         if (parsedCondition == null) {
           // error - bad parse! Ignore it.
-          System.out.println("Could not parse (sub)condition \"" + subCondition + "\" as part of conditions: " + Arrays.toString(subConditions.toArray()));
+          System.out
+              .println("Could not parse (sub)condition \"" + subCondition + "\" as part of conditions: " + Arrays.toString(subConditions.toArray()));
         } else {
           subConditions.add(parsedCondition);
         }
@@ -244,12 +245,14 @@ public final class SldUtils {
   }
 
   private enum ConditionOperatorEnum {
+    // @formatter:off
     LESS_THAN_OR_EQUAL("<=", "ogc:PropertyIsLessThanOrEqualTo"),
     GREATER_THAN_OR_EQUAL(">=", "ogc:PropertyIsGreaterThanOrEqualTo"),
     NOT_EQUAL("!=", "ogc:PropertyIsEqualTo"), // In the code above the tag will be surrounded with a NOT tag
     EQUAL("=", "ogc:PropertyIsEqualTo"),
     LESS_THAN("<", "ogc:PropertyIsLessThan"),
     GREATER_THAN(">", "ogc:PropertyIsGreaterThan");
+    // @formatter:on
 
     private String operator;
     private String sldTagName;
