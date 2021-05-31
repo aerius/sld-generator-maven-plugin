@@ -31,9 +31,7 @@ public class FileScanner {
    * @param fileExtension extension used to filter files
    * @return files as list
    */
-  public static List<File>
-
-      findFilesWithExtension(final File searchPath, final String fileExtension) throws IOException {
+  public static List<File> findFilesWithExtension(final File searchPath, final String fileExtension) throws IOException {
     try (Stream<Path> walk = Files.walk(searchPath.toPath())) {
       return walk
           .filter(Files::isRegularFile)
