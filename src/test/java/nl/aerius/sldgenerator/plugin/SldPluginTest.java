@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package nl.aerius.sldgenerator;
+package nl.aerius.sldgenerator.plugin;
 
 
-import nl.aerius.sldgenerator.plugin.SldPlugin;
 import org.apache.maven.monitor.logging.DefaultLog;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.logging.LoggerManager;
@@ -54,7 +53,7 @@ class SldPluginTest {
     SldPlugin.generateSld(mavenLog, sourceFilePath, outputStream);
     final String generatedOutput = outputStream.toString(StandardCharsets.UTF_8);
 
-    assertEquals(referenceOutput, generatedOutput);
+    assertEquals(referenceOutput, generatedOutput, "Generated output should match reference output");
   }
 
 }
