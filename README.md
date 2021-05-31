@@ -1,5 +1,7 @@
 # SLD Generator Maven Plugin
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=aerius_sld-generator-maven-plugin&metric=alert_status)](https://sonarcloud.io/dashboard?id=aerius_sld-generator-maven-plugin)
+
 ## About
 
 Geoserver uses `.sld` files as stylesheets for the layers.
