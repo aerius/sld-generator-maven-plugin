@@ -30,6 +30,8 @@ public class SldRule {
   private List<String> customDrawSld;
   private List<String> customConditionSld;
 
+  private static final String DELIMITER = "\n";
+
   // Object must be constructable from Jackson
   public SldRule() {
   }
@@ -108,7 +110,7 @@ public class SldRule {
     if (customDrawSld == null) {
       return null;
     } else {
-      return String.join("\n", customDrawSld);
+      return String.join(DELIMITER, customDrawSld);
     }
   }
 
@@ -128,7 +130,7 @@ public class SldRule {
     if (customConditionSld == null) {
       return null;
     } else {
-      return String.join("\n", customConditionSld);
+      return String.join(DELIMITER, customConditionSld);
     }
   }
 }
