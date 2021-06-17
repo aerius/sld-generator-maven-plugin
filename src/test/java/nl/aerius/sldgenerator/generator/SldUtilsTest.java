@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
@@ -98,8 +99,8 @@ public class SldUtilsTest {
     layer.getRules().add(new SldRule(null, null, null, "someImg.png", null, null));
     layer.getRules()
         .add(new SldRule(null, null, null, null,
-            "<sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\">#001122</sld:CssParameter></sld:Stroke></sld:LineSymbolizer>",
-            "<ogc:PropertyIsNull><ogc:PropertyName>someProperty</ogc:PropertyName></ogc:PropertyIsNull>"));
+            Collections.singletonList("<sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\">#001122</sld:CssParameter></sld:Stroke></sld:LineSymbolizer>"),
+            Collections.singletonList("<ogc:PropertyIsNull><ogc:PropertyName>someProperty</ogc:PropertyName></ogc:PropertyIsNull>"))) ;
     layer.getRules().add(new SldRule("something <= 4", "654321", "123456", null, null, null));
     layer.getRules().add(new SldRule("somethingElse = 8", "FFFFFF", "000000", null, null, null));
   }

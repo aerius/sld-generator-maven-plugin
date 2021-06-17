@@ -108,7 +108,7 @@ public final class SldUtils {
 
   private static String getRuleTitle(final SldRule sldRule, final ZoomLevel zoomLevel) {
     final String ruleTitle;
-    if (StringUtils.isEmpty(sldRule.getCustomConditionSld())) {
+    if (StringUtils.isEmpty(sldRule.getCustomConditionSldAsString())) {
       final List<String> titleParts = new ArrayList<String>();
       if (zoomLevel != null && zoomLevel.getZoomLevel() > 0) {
         titleParts.add("zoom_level = " + zoomLevel.getZoomLevel());
@@ -127,10 +127,10 @@ public final class SldUtils {
    * Append the filter part of the rule part to the SLD. Watch out, zoomLevel is allowed to be null.
    */
   private static void appendFilterPartForRule(final StringBuilder sld, final SldRule sldRule, final ZoomLevel zoomLevel) {
-    if (!StringUtils.isEmpty(sldRule.getCustomConditionSld()) || !StringUtils.isEmpty(sldRule.getCondition())
+    if (!StringUtils.isEmpty(sldRule.getCustomConditionSldAsString()) || !StringUtils.isEmpty(sldRule.getCondition())
         || zoomLevel != null && zoomLevel.getZoomLevel() > 0) {
       sld.append("<ogc:Filter>");
-      if (StringUtils.isEmpty(sldRule.getCustomConditionSld())) {
+      if (StringUtils.isEmpty(sldRule.getCustomConditionSldAsString())) {
         final List<ParsedCondition> subConditions = getSubConditions(sldRule, zoomLevel);
         if (subConditions.size() > 1) {
           sld.append(
@@ -156,7 +156,7 @@ public final class SldUtils {
           sld.append("</ogc:And>");
         }
       } else {
-        sld.append(sldRule.getCustomConditionSld());
+        sld.append(sldRule.getCustomConditionSldAsString());
       }
       sld.append("</ogc:Filter>");
     }
@@ -208,7 +208,7 @@ public final class SldUtils {
    * Append the symbolizer part of the rule part to the SLD.
    */
   private static void appendSymbolizerPartForRule(final StringBuilder sld, final SldRule sldRule) {
-    if (StringUtils.isEmpty(sldRule.getCustomDrawSld()) && !StringUtils.isEmpty(sldRule.getImageUrl())) {
+    if (StringUtils.isEmpty(sldRule.getCustomDrawSldAsString()) && !StringUtils.isEmpty(sldRule.getImageUrl())) {
       sld.append("<sld:PointSymbolizer>")
           .append("<sld:Geometry><ogc:PropertyName>geometry</ogc:PropertyName></sld:Geometry>")
           .append("<sld:Graphic><sld:ExternalGraphic>")
@@ -216,7 +216,7 @@ public final class SldUtils {
           .append("<sld:Format>image/png</sld:Format>")
           .append("</sld:ExternalGraphic></sld:Graphic>")
           .append("</sld:PointSymbolizer>");
-    } else if (StringUtils.isEmpty(sldRule.getCustomDrawSld())) {
+    } else if (StringUtils.isEmpty(sldRule.getCustomDrawSldAsString())) {
       sld.append("<sld:PolygonSymbolizer>");
       if (!StringUtils.isEmpty(sldRule.getFillColor())) {
         sld.append("<sld:Fill>")
@@ -233,7 +233,7 @@ public final class SldUtils {
       sld.append(
           "</sld:PolygonSymbolizer>");
     } else {
-      sld.append(sldRule.getCustomDrawSld());
+      sld.append(sldRule.getCustomDrawSldAsString());
     }
   }
 
