@@ -79,7 +79,7 @@ __Rules__
 | `strokeColor`        | color to outline the feature (hexadecimal)                                                                                                                                    |
 | `imageUrl`           | url to an image to draw at the center of the feature. The url is relative to the final `.sld` file, can be a local file in geoserver, or an external image (specify full url) |
 | `customDrawSld`      | custom XML used in the draw part for this rule in the `.sld` file (for advanced options which can not be specified using above properties, specified as array)                |
-| `customConditionSld` | custom XML used in the condition part for this rule in the `.sld` file (for advanced options which can not be specified using above properties, specified as array)          |
+| `customConditionSld` | custom XML used in the condition part for this rule in the `.sld` file (for advanced options which can not be specified using above properties, specified as array)           |
 
 ### Example zoom level definition
 
