@@ -16,6 +16,8 @@
  */
 package nl.aerius.sldgenerator.input;
 
+import java.util.List;
+
 /**
  * Represents an individual rule in the .sld.json file
  */
@@ -25,15 +27,17 @@ public class SldRule {
   private String strokeColor;
   private String fillColor;
   private String imageUrl;
-  private String customDrawSld;
-  private String customConditionSld;
+  private List<String> customDrawSld;
+  private List<String> customConditionSld;
+
+  private static final String DELIMITER = "\n";
 
   // Object must be constructable from Jackson
   public SldRule() {
   }
 
-  public SldRule(final String condition, final String strokeColor, final String fillColor, final String imageUrl, final String customDrawSld,
-      final String customConditionSld) {
+  public SldRule(final String condition, final String strokeColor, final String fillColor, final String imageUrl, final List<String> customDrawSld,
+      final List<String> customConditionSld) {
     this.condition = condition;
     this.strokeColor = strokeColor;
     this.fillColor = fillColor;
@@ -94,23 +98,39 @@ public class SldRule {
    * The custom XML used in the draw part for this rule in the SLD.
    * It should contain the symbolizer + content.
    */
-  public String getCustomDrawSld() {
+  public List<String> getCustomDrawSld() {
     return customDrawSld;
   }
 
-  public void setCustomDrawSld(String customDrawSld) {
+  public void setCustomDrawSld(List<String> customDrawSld) {
     this.customDrawSld = customDrawSld;
+  }
+
+  public String getCustomDrawSldAsString() {
+    if (customDrawSld == null) {
+      return null;
+    } else {
+      return String.join(DELIMITER, customDrawSld);
+    }
   }
 
   /**
    * The custom XML used in the rule condition for this rule in the SLD.
    * It should contain the content of the ogc:Filter tag.
    */
-  public String getCustomConditionSld() {
+  public List<String> getCustomConditionSld() {
     return customConditionSld;
   }
 
-  public void setCustomConditionSld(String customConditionSld) {
+  public void setCustomConditionSld(List<String> customConditionSld) {
     this.customConditionSld = customConditionSld;
+  }
+
+  public String getCustomConditionSldAsString() {
+    if (customConditionSld == null) {
+      return null;
+    } else {
+      return String.join(DELIMITER, customConditionSld);
+    }
   }
 }

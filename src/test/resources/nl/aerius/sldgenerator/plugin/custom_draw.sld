@@ -10,7 +10,7 @@
     <ogc:PropertyName>name</ogc:PropertyName>
   </sld:Label>
   <sld:Font>
-    <sld:CssParameter name="font-family">RijksoverheidSansText-Bold</sld:CssParameter>
+    <sld:CssParameter name="font-family">Noto Sans TC</sld:CssParameter>
     <sld:CssParameter name="font-size">13</sld:CssParameter>
     <sld:CssParameter name="font-style">normal</sld:CssParameter>
     <sld:CssParameter name="font-weight">bold</sld:CssParameter>
@@ -37,7 +37,7 @@
     <ogc:PropertyName>name</ogc:PropertyName>
   </sld:Label>
   <sld:Font>
-    <sld:CssParameter name="font-family">RijksoverheidSansText-Bold</sld:CssParameter>
+    <sld:CssParameter name="font-family">Noto Sans TC</sld:CssParameter>
     <sld:CssParameter name="font-size">13</sld:CssParameter>
     <sld:CssParameter name="font-style">normal</sld:CssParameter>
     <sld:CssParameter name="font-weight">bold</sld:CssParameter>
@@ -64,7 +64,7 @@
     <ogc:PropertyName>name</ogc:PropertyName>
   </sld:Label>
   <sld:Font>
-    <sld:CssParameter name="font-family">RijksoverheidSansText-Bold</sld:CssParameter>
+    <sld:CssParameter name="font-family">Noto Sans TC</sld:CssParameter>
     <sld:CssParameter name="font-size">13</sld:CssParameter>
     <sld:CssParameter name="font-style">normal</sld:CssParameter>
     <sld:CssParameter name="font-weight">bold</sld:CssParameter>
@@ -91,7 +91,7 @@
     <ogc:PropertyName>name</ogc:PropertyName>
   </sld:Label>
   <sld:Font>
-    <sld:CssParameter name="font-family">RijksoverheidSansText-Bold</sld:CssParameter>
+    <sld:CssParameter name="font-family">Noto Sans TC</sld:CssParameter>
     <sld:CssParameter name="font-size">13</sld:CssParameter>
     <sld:CssParameter name="font-style">normal</sld:CssParameter>
     <sld:CssParameter name="font-weight">bold</sld:CssParameter>
