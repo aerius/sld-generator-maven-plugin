@@ -210,7 +210,7 @@ public final class SldUtils {
    */
   private static void appendSymbolizerPartForRule(final StringBuilder sld, final SldRule sldRule) {
     final String customDrawSld = sldRule.getCustomDrawSldAsString();
-    if ((StringUtils.isEmpty(customDrawSld)) && !StringUtils.isEmpty(sldRule.getImageUrl())) {
+    if (StringUtils.isEmpty(customDrawSld) && !StringUtils.isEmpty(sldRule.getImageUrl())) {
       sld.append("<sld:PointSymbolizer>")
           .append("<sld:Geometry><ogc:PropertyName>geometry</ogc:PropertyName></sld:Geometry>")
           .append("<sld:Graphic><sld:ExternalGraphic>")
