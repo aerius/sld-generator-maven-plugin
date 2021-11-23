@@ -22,7 +22,7 @@
   <artifactId>sld-generator-maven-plugin</artifactId>
   <name>SLD Generator Maven Plugin</name>
   <description>AERIUS SLD Generator Maven Plugin generates SLD style files from JSON.</description>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>maven-plugin</packaging>
 
   <organization>
@@ -41,6 +41,7 @@
     <connection>scm:git:ssh://git@github.com/aerius/sld-generator-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/aerius/sld-generator-maven-plugin.git</developerConnection>
     <url>https://github.com/aerius/sld-generator-maven-plugin</url>
+    <tag>1.0.0</tag>
   </scm>
 
   <distributionManagement>
