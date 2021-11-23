@@ -1,2 +1,13 @@
+# Eclipse files      #
+######################
+.settings/
+.project
+.classpath
+
+# VS Code files      #
+######################
+.factorypath
+.vscode/
+
 # Ignore target
 target/
