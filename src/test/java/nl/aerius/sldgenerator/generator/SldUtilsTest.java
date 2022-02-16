@@ -70,7 +70,11 @@ public class SldUtilsTest {
     final SldFile layer = new SldFile("aeirus:someLayer");
     //the condition (2nd param) is being parsed. This one can't be parsed correctly
     //tbh there should be something done about the colors too... but ah well...
-    layer.getRules().add(new SldRule("someweirdcond", "nocolors", "reallynocolors", null, null, null));
+    final SldRule rule = new SldRule();
+    rule.setCondition("someweirdcond");
+    rule.setStrokeColor("nocolors");
+    rule.setFillColor("reallynocolors");
+    layer.getRules().add(rule);
     final String sldContent = SldUtils.generateSLD(layer);
     testContent(sldContent, INCORRECT_RULE_SLD);
   }
@@ -96,14 +100,26 @@ public class SldUtilsTest {
   }
 
   private void addRules(final SldFile layer) {
-    layer.getRules().add(new SldRule(null, null, null, "someImg.png", null, null));
-    layer.getRules()
-        .add(new SldRule(null, null, null, null,
-            Collections.singletonList(
-                "<sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\">#001122</sld:CssParameter></sld:Stroke></sld:LineSymbolizer>"),
-            Collections.singletonList("<ogc:PropertyIsNull><ogc:PropertyName>someProperty</ogc:PropertyName></ogc:PropertyIsNull>")));
-    layer.getRules().add(new SldRule("something <= 4", "654321", "123456", null, null, null));
-    layer.getRules().add(new SldRule("somethingElse = 8", "FFFFFF", "000000", null, null, null));
+    final SldRule imageRule = new SldRule();
+    imageRule.setImageUrl("someImg.png");
+    layer.getRules().add(imageRule);
+    final SldRule customRule = new SldRule();
+    customRule.setCustomDrawSld(
+        Collections.singletonList(
+            "<sld:LineSymbolizer><sld:Stroke><sld:CssParameter name=\"stroke\">#001122</sld:CssParameter></sld:Stroke></sld:LineSymbolizer>"));
+    customRule.setCustomConditionSld(
+        Collections.singletonList("<ogc:PropertyIsNull><ogc:PropertyName>someProperty</ogc:PropertyName></ogc:PropertyIsNull>"));
+    layer.getRules().add(customRule);
+    final SldRule polygonRule1 = new SldRule();
+    polygonRule1.setCondition("something <= 4");
+    polygonRule1.setStrokeColor("654321");
+    polygonRule1.setFillColor("123456");
+    layer.getRules().add(polygonRule1);
+    final SldRule polygonRule2 = new SldRule();
+    polygonRule2.setCondition("somethingElse = 8");
+    polygonRule2.setStrokeColor("FFFFFF");
+    polygonRule2.setFillColor("000000");
+    layer.getRules().add(polygonRule2);
   }
 
   private String getFileContent(final String fileName) throws IOException {

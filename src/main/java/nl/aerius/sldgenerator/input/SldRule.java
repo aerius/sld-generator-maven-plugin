@@ -23,27 +23,38 @@ import java.util.List;
  */
 public class SldRule {
 
+  private String symbolizerType;
   private String condition;
   private String strokeColor;
   private String fillColor;
+  private String pointType;
+  private int pointSize;
   private String imageUrl;
   private List<String> customDrawSld;
   private List<String> customConditionSld;
 
   private static final String DELIMITER = "\n";
 
-  // Object must be constructable from Jackson
-  public SldRule() {
+  /**
+   * The symbolizer type to use.
+   * If supplied, and if a known value is used, this will override any other implicit type.
+   * Known values:
+   * - POLYGON_SYMBOLIZER
+   * - POINT_SYMBOLIZER
+   * - GRAPHIC
+   * - CUSTOM
+   *
+   * If not supplied:
+   * - customDrawSld will be used if supplied
+   * - graphic will be used if supplied and customDrawSld is not supplied
+   * - PolygonSymbolizer will be used otherwise
+   */
+  public String getSymbolizerType() {
+    return symbolizerType;
   }
 
-  public SldRule(final String condition, final String strokeColor, final String fillColor, final String imageUrl, final List<String> customDrawSld,
-      final List<String> customConditionSld) {
-    this.condition = condition;
-    this.strokeColor = strokeColor;
-    this.fillColor = fillColor;
-    this.imageUrl = imageUrl;
-    this.customDrawSld = customDrawSld;
-    this.customConditionSld = customConditionSld;
+  public void setSymbolizerType(final String symbolizerType) {
+    this.symbolizerType = symbolizerType;
   }
 
   /**
@@ -54,7 +65,7 @@ public class SldRule {
     return condition;
   }
 
-  public void setCondition(String condition) {
+  public void setCondition(final String condition) {
     this.condition = condition;
   }
 
@@ -66,7 +77,7 @@ public class SldRule {
     return strokeColor;
   }
 
-  public void setStrokeColor(String strokeColor) {
+  public void setStrokeColor(final String strokeColor) {
     this.strokeColor = strokeColor;
   }
 
@@ -78,8 +89,31 @@ public class SldRule {
     return fillColor;
   }
 
-  public void setFillColor(String fillColor) {
+  public void setFillColor(final String fillColor) {
     this.fillColor = fillColor;
+  }
+
+  /**
+   * The type of point to use. Will only be used for a PointSymbolizer.
+   * For possible values, look at SLD documentation for Point > Mark > WellKnownName
+   */
+  public String getPointType() {
+    return pointType;
+  }
+
+  public void setPointType(final String pointType) {
+    this.pointType = pointType;
+  }
+
+  /**
+   * The size of point (in pixels) to use. Will only be used for a PointSymbolizer.
+   */
+  public int getPointSize() {
+    return pointSize;
+  }
+
+  public void setPointSize(final int pointSize) {
+    this.pointSize = pointSize;
   }
 
   /**
@@ -90,7 +124,7 @@ public class SldRule {
     return imageUrl;
   }
 
-  public void setImageUrl(String imageUrl) {
+  public void setImageUrl(final String imageUrl) {
     this.imageUrl = imageUrl;
   }
 
@@ -102,7 +136,7 @@ public class SldRule {
     return customDrawSld;
   }
 
-  public void setCustomDrawSld(List<String> customDrawSld) {
+  public void setCustomDrawSld(final List<String> customDrawSld) {
     this.customDrawSld = customDrawSld;
   }
 
@@ -122,7 +156,7 @@ public class SldRule {
     return customConditionSld;
   }
 
-  public void setCustomConditionSld(List<String> customConditionSld) {
+  public void setCustomConditionSld(final List<String> customConditionSld) {
     this.customConditionSld = customConditionSld;
   }
 
