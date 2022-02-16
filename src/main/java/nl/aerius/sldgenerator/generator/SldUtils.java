@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -262,18 +261,8 @@ public final class SldUtils {
 
   private static void appendPolygonSymbolizerPart(final StringBuilder sld, final SldRule sldRule) {
     sld.append("<sld:PolygonSymbolizer>");
-    if (!StringUtils.isEmpty(sldRule.getFillColor())) {
-      sld.append("<sld:Fill>")
-          .append("<sld:CssParameter name=\"fill\">#").append(sldRule.getFillColor()).append("</sld:CssParameter>")
-          .append("<sld:CssParameter name=\"fill-opacity\">1</sld:CssParameter>")
-          .append("</sld:Fill>");
-    }
-    if (!StringUtils.isEmpty(sldRule.getStrokeColor())) {
-      sld.append("<sld:Stroke>")
-          .append("<sld:CssParameter name=\"stroke\">#").append(sldRule.getStrokeColor()).append("</sld:CssParameter>")
-          .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
-          .append("</sld:Stroke>");
-    }
+    appendFill(sld, sldRule);
+    appendStroke(sld, sldRule);
     sld.append("</sld:PolygonSymbolizer>");
   }
 
@@ -281,27 +270,37 @@ public final class SldUtils {
     sld.append("<sld:PointSymbolizer>");
     sld.append("<sld:Graphic>");
     sld.append("<sld:Mark>");
-    sld.append("<sld:WellKnownName>")
-        .append(Optional.ofNullable(sldRule.getPointType()).orElse("circle"))
-        .append("</sld:WellKnownName>");
-    if (!StringUtils.isEmpty(sldRule.getFillColor())) {
-      sld.append("<sld:Fill>")
-          .append("<sld:CssParameter name=\"fill\">#").append(sldRule.getFillColor()).append("</sld:CssParameter>")
-          .append("<sld:CssParameter name=\"fill-opacity\">1</sld:CssParameter>")
-          .append("</sld:Fill>");
+    if (!StringUtils.isEmpty(sldRule.getPointType())) {
+      sld.append("<sld:WellKnownName>")
+          .append(sldRule.getPointType())
+          .append("</sld:WellKnownName>");
     }
-    if (!StringUtils.isEmpty(sldRule.getStrokeColor())) {
-      sld.append("<sld:Stroke>")
-          .append("<sld:CssParameter name=\"stroke\">#").append(sldRule.getStrokeColor()).append("</sld:CssParameter>")
-          .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
-          .append("</sld:Stroke>");
-    }
+    appendFill(sld, sldRule);
+    appendStroke(sld, sldRule);
     sld.append("</sld:Mark>");
     sld.append("<sld:Size>")
         .append(sldRule.getPointSize())
         .append("</sld:Size>");
     sld.append("</sld:Graphic>");
     sld.append("</sld:PointSymbolizer>");
+  }
+
+  private static void appendFill(final StringBuilder sld, final SldRule sldRule) {
+    if (!StringUtils.isEmpty(sldRule.getFillColor())) {
+      sld.append("<sld:Fill>")
+          .append("<sld:CssParameter name=\"fill\">#").append(sldRule.getFillColor()).append("</sld:CssParameter>")
+          .append("<sld:CssParameter name=\"fill-opacity\">1</sld:CssParameter>")
+          .append("</sld:Fill>");
+    }
+  }
+
+  private static void appendStroke(final StringBuilder sld, final SldRule sldRule) {
+    if (!StringUtils.isEmpty(sldRule.getStrokeColor())) {
+      sld.append("<sld:Stroke>")
+          .append("<sld:CssParameter name=\"stroke\">#").append(sldRule.getStrokeColor()).append("</sld:CssParameter>")
+          .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
+          .append("</sld:Stroke>");
+    }
   }
 
   /**
