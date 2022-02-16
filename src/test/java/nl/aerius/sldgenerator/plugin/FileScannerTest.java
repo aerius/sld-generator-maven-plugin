@@ -16,7 +16,7 @@
  */
 package nl.aerius.sldgenerator.plugin;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +31,6 @@ class FileScannerTest {
   void findFilesWithExtension() throws URISyntaxException, IOException {
     final List<File> filesInFolder = FileScanner.findFilesWithExtension(
         new File(getClass().getResource(".").toURI()), ".sld.json");
-    assertEquals(4, filesInFolder.size(), "Should be 4 files in the folder.");
+    assertEquals(5, filesInFolder.size(), "Should be 5 files in the folder.");
   }
 }

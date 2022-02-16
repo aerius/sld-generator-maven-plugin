@@ -120,6 +120,13 @@ public class SldUtilsTest {
     polygonRule2.setStrokeColor("FFFFFF");
     polygonRule2.setFillColor("000000");
     layer.getRules().add(polygonRule2);
+    final SldRule pointRule = new SldRule();
+    pointRule.setSymbolizerType("POINT_SYMBOLIZER");
+    pointRule.setCondition("yes != 'no'");
+    pointRule.setStrokeColor("ABCDEF");
+    pointRule.setPointType("star");
+    pointRule.setPointSize(4);
+    layer.getRules().add(pointRule);
   }
 
   private String getFileContent(final String fileName) throws IOException {
