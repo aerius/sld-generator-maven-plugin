@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import nl.aerius.sldgenerator.input.SldRule;
 import nl.aerius.sldgenerator.input.ZoomLevel;
@@ -109,7 +109,7 @@ public final class SldUtils {
   private static String getRuleTitle(final SldRule sldRule, final ZoomLevel zoomLevel) {
     final String ruleTitle;
     if (sldRule.getCustomConditionSld() == null || sldRule.getCustomConditionSld().isEmpty()) {
-      final List<String> titleParts = new ArrayList<String>();
+      final List<String> titleParts = new ArrayList<>();
       if (zoomLevel != null && zoomLevel.getZoomLevel() > 0) {
         titleParts.add("zoom_level = " + zoomLevel.getZoomLevel());
       }
@@ -138,20 +138,7 @@ public final class SldUtils {
               "<ogc:And>");
         }
 
-        // Per subcondition, add a block to filter it out.
-        for (final ParsedCondition parsedCondition : subConditions) {
-          // Add parent NOT tag if its a NOT EQUAL operator.
-          if (parsedCondition.conditionOperator == ConditionOperatorEnum.NOT_EQUAL) {
-            sld.append("<ogc:Not>");
-          }
-          sld.append('<').append(parsedCondition.getConditionOperator().getSldTagName()).append('>');
-          sld.append("<ogc:PropertyName>").append(escapeXML(parsedCondition.getKey())).append("</ogc:PropertyName>");
-          sld.append("<ogc:Literal>").append(escapeXML(parsedCondition.getValue())).append("</ogc:Literal>");
-          sld.append("</").append(parsedCondition.getConditionOperator().getSldTagName()).append('>');
-          if (parsedCondition.conditionOperator == ConditionOperatorEnum.NOT_EQUAL) {
-            sld.append("</ogc:Not>");
-          }
-        }
+        appendFilterSubConditions(sld, subConditions);
 
         if (subConditions.size() > 1) {
           sld.append("</ogc:And>");
@@ -160,6 +147,23 @@ public final class SldUtils {
         sld.append(customConditionSld);
       }
       sld.append("</ogc:Filter>");
+    }
+  }
+
+  private static void appendFilterSubConditions(final StringBuilder sld, final List<ParsedCondition> subConditions) {
+    // Per subcondition, add a block to filter it out.
+    for (final ParsedCondition parsedCondition : subConditions) {
+      // Add parent NOT tag if its a NOT EQUAL operator.
+      if (parsedCondition.conditionOperator == ConditionOperatorEnum.NOT_EQUAL) {
+        sld.append("<ogc:Not>");
+      }
+      sld.append('<').append(parsedCondition.getConditionOperator().getSldTagName()).append('>');
+      sld.append("<ogc:PropertyName>").append(escapeXML(parsedCondition.getKey())).append("</ogc:PropertyName>");
+      sld.append("<ogc:Literal>").append(escapeXML(parsedCondition.getValue())).append("</ogc:Literal>");
+      sld.append("</").append(parsedCondition.getConditionOperator().getSldTagName()).append('>');
+      if (parsedCondition.conditionOperator == ConditionOperatorEnum.NOT_EQUAL) {
+        sld.append("</ogc:Not>");
+      }
     }
   }
 
@@ -211,32 +215,40 @@ public final class SldUtils {
   private static void appendSymbolizerPartForRule(final StringBuilder sld, final SldRule sldRule) {
     final String customDrawSld = sldRule.getCustomDrawSldAsString();
     if (StringUtils.isEmpty(customDrawSld) && !StringUtils.isEmpty(sldRule.getImageUrl())) {
-      sld.append("<sld:PointSymbolizer>")
-          .append("<sld:Geometry><ogc:PropertyName>geometry</ogc:PropertyName></sld:Geometry>")
-          .append("<sld:Graphic><sld:ExternalGraphic>")
-          .append("<sld:OnlineResource xlink:type=\"simple\" xlink:href=\"").append(sldRule.getImageUrl()).append("\" />")
-          .append("<sld:Format>image/png</sld:Format>")
-          .append("</sld:ExternalGraphic></sld:Graphic>")
-          .append("</sld:PointSymbolizer>");
+      appendGraphicSymbolizerPart(sld, sldRule);
     } else if (StringUtils.isEmpty(customDrawSld)) {
-      sld.append("<sld:PolygonSymbolizer>");
-      if (!StringUtils.isEmpty(sldRule.getFillColor())) {
-        sld.append("<sld:Fill>")
-            .append("<sld:CssParameter name=\"fill\">#").append(sldRule.getFillColor()).append("</sld:CssParameter>")
-            .append("<sld:CssParameter name=\"fill-opacity\">1</sld:CssParameter>")
-            .append("</sld:Fill>");
-      }
-      if (!StringUtils.isEmpty(sldRule.getStrokeColor())) {
-        sld.append("<sld:Stroke>")
-            .append("<sld:CssParameter name=\"stroke\">#").append(sldRule.getStrokeColor()).append("</sld:CssParameter>")
-            .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
-            .append("</sld:Stroke>");
-      }
-      sld.append(
-          "</sld:PolygonSymbolizer>");
+      appendPolygonSymbolizerPart(sld, sldRule);
     } else {
       sld.append(customDrawSld);
     }
+  }
+
+  private static void appendGraphicSymbolizerPart(final StringBuilder sld, final SldRule sldRule) {
+    sld.append("<sld:PointSymbolizer>")
+        .append("<sld:Geometry><ogc:PropertyName>geometry</ogc:PropertyName></sld:Geometry>")
+        .append("<sld:Graphic><sld:ExternalGraphic>")
+        .append("<sld:OnlineResource xlink:type=\"simple\" xlink:href=\"").append(sldRule.getImageUrl()).append("\" />")
+        .append("<sld:Format>image/png</sld:Format>")
+        .append("</sld:ExternalGraphic></sld:Graphic>")
+        .append("</sld:PointSymbolizer>");
+  }
+
+  private static void appendPolygonSymbolizerPart(final StringBuilder sld, final SldRule sldRule) {
+    sld.append("<sld:PolygonSymbolizer>");
+    if (!StringUtils.isEmpty(sldRule.getFillColor())) {
+      sld.append("<sld:Fill>")
+          .append("<sld:CssParameter name=\"fill\">#").append(sldRule.getFillColor()).append("</sld:CssParameter>")
+          .append("<sld:CssParameter name=\"fill-opacity\">1</sld:CssParameter>")
+          .append("</sld:Fill>");
+    }
+    if (!StringUtils.isEmpty(sldRule.getStrokeColor())) {
+      sld.append("<sld:Stroke>")
+          .append("<sld:CssParameter name=\"stroke\">#").append(sldRule.getStrokeColor()).append("</sld:CssParameter>")
+          .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
+          .append("</sld:Stroke>");
+    }
+    sld.append(
+        "</sld:PolygonSymbolizer>");
   }
 
   /**
@@ -256,8 +268,8 @@ public final class SldUtils {
     GREATER_THAN(">", "ogc:PropertyIsGreaterThan");
     // @formatter:on
 
-    private String operator;
-    private String sldTagName;
+    private final String operator;
+    private final String sldTagName;
 
     ConditionOperatorEnum(final String operator, final String sldTagName) {
       this.operator = operator;
