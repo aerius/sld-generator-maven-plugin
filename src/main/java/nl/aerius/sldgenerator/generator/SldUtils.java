@@ -19,6 +19,8 @@ package nl.aerius.sldgenerator.generator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -213,14 +215,39 @@ public final class SldUtils {
    * Append the symbolizer part of the rule part to the SLD.
    */
   private static void appendSymbolizerPartForRule(final StringBuilder sld, final SldRule sldRule) {
-    final String customDrawSld = sldRule.getCustomDrawSldAsString();
-    if (StringUtils.isEmpty(customDrawSld) && !StringUtils.isEmpty(sldRule.getImageUrl())) {
+    final SymbolizerType symbolizerType = determineSymbolizer(sldRule);
+    switch (symbolizerType) {
+    case GRAPHIC:
       appendGraphicSymbolizerPart(sld, sldRule);
-    } else if (StringUtils.isEmpty(customDrawSld)) {
+      break;
+    case POLYGON_SYMBOLIZER:
       appendPolygonSymbolizerPart(sld, sldRule);
-    } else {
-      sld.append(customDrawSld);
+      break;
+    case POINT_SYMBOLIZER:
+      appendPointSymbolizerPart(sld, sldRule);
+      break;
+    case CUSTOM:
+      sld.append(sldRule.getCustomDrawSldAsString());
+      break;
+    default:
+      break;
     }
+  }
+
+  private static SymbolizerType determineSymbolizer(final SldRule sldRule) {
+    SymbolizerType correctType;
+    if (sldRule.getSymbolizerType() == null) {
+      if (sldRule.getCustomDrawSld() == null && !StringUtils.isEmpty(sldRule.getImageUrl())) {
+        correctType = SymbolizerType.GRAPHIC;
+      } else if (sldRule.getCustomDrawSld() == null) {
+        correctType = SymbolizerType.POLYGON_SYMBOLIZER;
+      } else {
+        correctType = SymbolizerType.CUSTOM;
+      }
+    } else {
+      correctType = SymbolizerType.safeValueOf(sldRule.getSymbolizerType());
+    }
+    return correctType;
   }
 
   private static void appendGraphicSymbolizerPart(final StringBuilder sld, final SldRule sldRule) {
@@ -247,8 +274,34 @@ public final class SldUtils {
           .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
           .append("</sld:Stroke>");
     }
-    sld.append(
-        "</sld:PolygonSymbolizer>");
+    sld.append("</sld:PolygonSymbolizer>");
+  }
+
+  private static void appendPointSymbolizerPart(final StringBuilder sld, final SldRule sldRule) {
+    sld.append("<sld:PointSymbolizer>");
+    sld.append("<sld:Graphic>");
+    sld.append("<sld:Mark>");
+    sld.append("<sld:WellKnownName>")
+        .append(Optional.ofNullable(sldRule.getPointType()).orElse("circle"))
+        .append("</sld:WellKnownName>");
+    if (!StringUtils.isEmpty(sldRule.getFillColor())) {
+      sld.append("<sld:Fill>")
+          .append("<sld:CssParameter name=\"fill\">#").append(sldRule.getFillColor()).append("</sld:CssParameter>")
+          .append("<sld:CssParameter name=\"fill-opacity\">1</sld:CssParameter>")
+          .append("</sld:Fill>");
+    }
+    if (!StringUtils.isEmpty(sldRule.getStrokeColor())) {
+      sld.append("<sld:Stroke>")
+          .append("<sld:CssParameter name=\"stroke\">#").append(sldRule.getStrokeColor()).append("</sld:CssParameter>")
+          .append("<sld:CssParameter name=\"stroke-opacity\">1</sld:CssParameter><sld:CssParameter name=\"stroke-width\">0.5</sld:CssParameter>")
+          .append("</sld:Stroke>");
+    }
+    sld.append("</sld:Mark>");
+    sld.append("<sld:Size>")
+        .append(sldRule.getPointSize())
+        .append("</sld:Size>");
+    sld.append("</sld:Graphic>");
+    sld.append("</sld:PointSymbolizer>");
   }
 
   /**
@@ -306,6 +359,20 @@ public final class SldUtils {
 
     public String getValue() {
       return value;
+    }
+  }
+
+  private enum SymbolizerType {
+
+    POLYGON_SYMBOLIZER, POINT_SYMBOLIZER, GRAPHIC, CUSTOM;
+
+    public static final SymbolizerType safeValueOf(final String value) {
+      // Use polygon symbolizer as default, either when no value is supplied or an unknown value is used.
+      try {
+        return value == null ? SymbolizerType.POLYGON_SYMBOLIZER : valueOf(value.toUpperCase(Locale.ROOT));
+      } catch (final IllegalArgumentException e) {
+        return SymbolizerType.POLYGON_SYMBOLIZER;
+      }
     }
   }
 }
