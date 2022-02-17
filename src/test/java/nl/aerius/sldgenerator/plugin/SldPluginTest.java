@@ -38,21 +38,25 @@ class SldPluginTest {
   private static final LoggerManager logger = new ConsoleLoggerManager();
 
   @ParameterizedTest
-  @ValueSource(strings = {"simple.sld", "simple_with_zoomlevels.sld", "image.sld", "custom_draw.sld"})
+  @ValueSource(strings = {"simple.sld", "simple_with_zoomlevels.sld", "image.sld", "custom_draw.sld", "point.sld"})
   void testAgainstReferenceFile(final String fileName) throws URISyntaxException, IOException {
 
     final Log mavenLog = new DefaultLog(logger.getLoggerForComponent(getClass().getName()));
 
     final Path sourceFilePath = Paths.get(getClass().getResource(fileName + ".json").toURI());
     final InputStream referenceFile = getClass().getResourceAsStream(fileName);
-    String referenceOutput = new String(referenceFile.readAllBytes());
+    final String referenceOutput = new String(referenceFile.readAllBytes());
 
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     SldPlugin.generateSld(mavenLog, sourceFilePath, outputStream);
     final String generatedOutput = outputStream.toString(StandardCharsets.UTF_8);
 
-    assertEquals(referenceOutput, generatedOutput, "Generated output should match reference output");
+    assertEquals(replaceNewLines(referenceOutput), replaceNewLines(generatedOutput), "Generated output should match reference output");
+  }
+
+  private static String replaceNewLines(final String string) {
+    return string.replaceAll("[\n\r]", "");
   }
 
 }
