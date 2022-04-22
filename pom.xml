@@ -22,7 +22,7 @@
   <artifactId>sld-generator-maven-plugin</artifactId>
   <name>SLD Generator Maven Plugin</name>
   <description>AERIUS SLD Generator Maven Plugin generates SLD style files from JSON.</description>
-  <version>1.0.1</version>
+  <version>1.1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <organization>
