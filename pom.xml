@@ -61,7 +61,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <maven-plugin.version>3.6.0</maven-plugin.version>
+    <maven-plugin.version>3.8.2</maven-plugin.version>
     <junit.version>5.7.2</junit.version>
     <jackson.version>2.12.3</jackson.version>
 
