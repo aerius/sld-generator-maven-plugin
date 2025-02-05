@@ -36,15 +36,13 @@ import com.fasterxml.jackson.core.JacksonException;
 @Mojo(name = "generate-sld", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class SldPluginMojo extends AbstractMojo {
 
-  @Parameter
-  private File sourcePath;
+  @Parameter private File sourcePath;
 
-  @Parameter
-  private File targetPath;
+  @Parameter private File targetPath;
 
-  @Parameter
-  private String targetPostfix = "";
+  @Parameter private final String targetPostfix = "";
 
+  @Override
   public void execute() throws MojoExecutionException {
 
     try {
@@ -66,12 +64,12 @@ public class SldPluginMojo extends AbstractMojo {
           SldPlugin.generateSld(getLog(), sourceFilePath, outputStream);
           outputStream.close();
 
-        } catch (JacksonException e) {
+        } catch (final JacksonException e) {
           throw new MojoExecutionException("JSON Parse Error at (" + sourceFilePath + ") while generating SLDs", e);
         }
       }
 
-    } catch (IOException e) {
+    } catch (final IOException e) {
       throw new MojoExecutionException("IO Error while generating SLDs", e);
     }
   }

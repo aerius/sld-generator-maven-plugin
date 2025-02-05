@@ -26,10 +26,9 @@ public class ZoomLevel {
   private int maxScale;
 
   // Object must be constructable from Jackson
-  public ZoomLevel() {
-  }
+  public ZoomLevel() {}
 
-  public ZoomLevel(int zoomLevel, int minScale, int maxScale) {
+  public ZoomLevel(final int zoomLevel, final int minScale, final int maxScale) {
     this.zoomLevel = zoomLevel;
     this.minScale = minScale;
     this.maxScale = maxScale;
@@ -42,7 +41,7 @@ public class ZoomLevel {
     return zoomLevel;
   }
 
-  public void setZoomLevel(int zoomLevel) {
+  public void setZoomLevel(final int zoomLevel) {
     this.zoomLevel = zoomLevel;
   }
 
@@ -53,7 +52,7 @@ public class ZoomLevel {
     return minScale;
   }
 
-  public void setMinScale(int minScale) {
+  public void setMinScale(final int minScale) {
     this.minScale = minScale;
   }
 
@@ -64,7 +63,7 @@ public class ZoomLevel {
     return maxScale;
   }
 
-  public void setMaxScale(int maxScale) {
+  public void setMaxScale(final int maxScale) {
     this.maxScale = maxScale;
   }
 }
