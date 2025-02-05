@@ -359,6 +359,12 @@ public final class SldUtils {
     public String getValue() {
       return value;
     }
+
+    @Override
+    public String toString() {
+      return "ParsedCondition [key=" + key + ", conditionOperator=" + conditionOperator + ", value=" + value + "]";
+    }
+
   }
 
   private enum SymbolizerType {
