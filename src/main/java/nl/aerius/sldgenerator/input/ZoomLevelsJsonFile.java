@@ -19,4 +19,7 @@ package nl.aerius.sldgenerator.input;
 import java.util.ArrayList;
 
 public class ZoomLevelsJsonFile extends ArrayList<ZoomLevel> {
+
+  private static final long serialVersionUID = 1L;
+
 }
