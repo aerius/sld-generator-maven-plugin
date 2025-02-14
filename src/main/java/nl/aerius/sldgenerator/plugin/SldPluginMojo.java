@@ -36,11 +36,11 @@ import com.fasterxml.jackson.core.JacksonException;
 @Mojo(name = "generate-sld", defaultPhase = LifecyclePhase.PROCESS_RESOURCES)
 public class SldPluginMojo extends AbstractMojo {
 
-  @Parameter private File sourcePath;
+  @Parameter File sourcePath;
 
-  @Parameter private File targetPath;
+  @Parameter File targetPath;
 
-  @Parameter private String targetPostfix = "";
+  @Parameter String targetPostfix = "";
 
   @Override
   public void execute() throws MojoExecutionException {
