@@ -7,6 +7,7 @@ on:
 
 jobs:
   job:
+    if: github.repository == 'aerius/sld-generator-maven-plugin'
     runs-on: ubuntu-latest
 
     steps:
